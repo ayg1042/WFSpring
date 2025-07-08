@@ -54,7 +54,7 @@ public class FController {
 		Map<String, BookDto> result = new HashMap<>();
 		BookDto dto = bookService.find(key);
 		
-		if(dto != null) {
+		if(dto == null) {
 			result.put("없는 Key 값 입니다", null);
 			return result;
 		}
