@@ -113,7 +113,7 @@ public class BookServiceImpl implements BookService {
 		
 	}
 
-	
+//	5. 삭제
 	@Override
 	public void delete(BookDto dto) {
 		bookList.remove(dto);

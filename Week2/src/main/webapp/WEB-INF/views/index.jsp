@@ -10,6 +10,24 @@
 </head>
 <body>
  <h2>Book</h2>
+ 
+ <p>1) 전체 조회</p>
+  <p>/showAll</p>
+  <p>/showAll2</p>
+
+  <p>2) Key로 조회</p>
+  <p>/find?key="key_value"</p>
+
+  <p>3) 신규 데이터 추가</p>
+  <p>/addBook?bookName="name"&author="author"&type="type"</p>
+
+  <p>4) 데이터 수정</p>
+  <p>/update?key="key_value"</p>
+
+  <p>5) 데이터 삭제</p>
+  <p>/delete?key="key_value"</p>
+  <hr>
+ 
  <c:if test="${showList != null}">
  	<c:forEach items="${showList}" var="dto">
  		<p>키값 : ${dto.key}</p>
