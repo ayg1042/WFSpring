@@ -19,7 +19,7 @@ public interface BookService {
 	
 	public Boolean addData(String[] data);
 	
-	public Boolean update(String key, String bookName, String author, String type);
+	public Boolean update(String key, BookDto dto);
 	
 	public void delete(BookDto dto);
 }

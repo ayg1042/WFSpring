@@ -3,6 +3,12 @@ package com.example.demo.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
@@ -89,7 +95,8 @@ public class BookServiceImpl implements BookService {
 		BookDto dto = new BookDto(data);
 		
 		try {			
-			bookList.add(dto);
+			bookList = Stream.concat(bookList.stream(), Stream.of(new BookDto(data)))
+		            .collect(Collectors.toCollection(ArrayList::new));
 		}catch (NullPointerException e) {
 			return false;
 		}
@@ -99,15 +106,26 @@ public class BookServiceImpl implements BookService {
 
 //	4. 수정
 	@Override
-	public Boolean update(String key, String bookName, String author, String type) {
+	public Boolean update(String key, BookDto dto) {
 		
-		BookDto dto = find(key);
+		BookDto target = find(key);
+		ArrayList<Consumer<String>> oldData = new ArrayList<>();
+		oldData.add(target::setBook_name);
+		oldData.add(target::setAuthor);
+		oldData.add(target::setType);
 		
-		if(dto == null)	return false;
+		List<String> newData = new ArrayList<>();
+		newData.add(dto.getBook_name());
+		newData.add(dto.getAuthor());
+		newData.add(dto.getType());
 		
-		dto.setBook_name(bookName);
-		dto.setAuthor(author);
-		dto.setType(type);
+		if(target == null)	return false;
+		
+		IntStream.range(0, oldData.size()).forEach(
+				i -> {
+					oldData.get(i).accept(newData.get(i));
+				}
+				);
 		
 		return true;
 		
@@ -116,7 +134,9 @@ public class BookServiceImpl implements BookService {
 //	5. 삭제
 	@Override
 	public void delete(BookDto dto) {
-		bookList.remove(dto);
+		bookList = bookList.stream()
+                .filter(a -> a != dto)
+                .collect(Collectors.toCollection(ArrayList::new));
 	}
 
 

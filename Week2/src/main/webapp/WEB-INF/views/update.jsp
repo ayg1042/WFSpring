@@ -9,7 +9,8 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
-	<form id="update" action="/update" method="post">
+	<form id="update" action="/update2" method="POST">
+		<input type="hidden" name="_method" value="PUT">
 		<input type="hidden" name="key" id="key" value="${book.key}">
 		<label name="bookName">책 이름</label>
 		<input type="text" name="bookName" id="bookName" value="${book.book_name }"></br>	
