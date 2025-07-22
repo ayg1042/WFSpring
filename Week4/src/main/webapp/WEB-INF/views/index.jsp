@@ -9,7 +9,7 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
- <h2>Book </h2>
+ <h2>Book_my_branch_2</h2>
  
  <p>1) 전체 조회</p>
   <p>/showAll</p>
