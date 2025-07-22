@@ -29,6 +29,7 @@ public class ControllerAdivce {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<MyResponse> VDException(MethodArgumentNotValidException e){
 		Object inputData = e.getBindingResult().getTarget();
+		// MyResponse.builder().result(false).data(inputData).message(e.getBindingResult().getFieldError().getDefaultMessage());
 		
 		return ResponseEntity
 				.badRequest()
