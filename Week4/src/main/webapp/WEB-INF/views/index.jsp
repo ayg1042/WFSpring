@@ -10,6 +10,7 @@
 </head>
 <body>
  <h2>Book_my_branch_2</h2>
+ <h2>Book_my_branch_1</h2>
  
  <p>1) 전체 조회</p>
   <p>/showAll</p>
