@@ -1,11 +1,16 @@
 package com.example.demo.ControllerAdvice;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,14 +35,21 @@ public class ControllerAdivce {
 	// 필드별 메시지 한번에 표기
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<MyResponse> VDException(MethodArgumentNotValidException e){
-		Object inputData = e.getBindingResult().getTarget();
-		String errorMessage = e.getBindingResult().getFieldError() != null ?
-				e.getBindingResult().getFieldError().getDefaultMessage()
-				: ErrorCode.VALIDATION_ERROR.getMessage();
+
+//		return ResponseEntity
+//				.status(ErrorCode.VALIDATION_ERROR.getStatus())
+//                .body(new MyResponse(false, errorMessage, inputData));
+		
+		List<ObjectError> allErrors = e.getBindingResult().getAllErrors();
+		
+		ArrayList<String> errors = allErrors.stream()
+		.map( er -> er.getDefaultMessage())
+		.collect(Collectors.toCollection(ArrayList::new));
 		
 		return ResponseEntity
 				.status(ErrorCode.VALIDATION_ERROR.getStatus())
-                .body(new MyResponse(false, errorMessage, inputData));
+                .body(new MyResponse(false, "입력값 오류", errors));
+		
 	}
 	
 	@ExceptionHandler(IllegalArgumentException.class)
