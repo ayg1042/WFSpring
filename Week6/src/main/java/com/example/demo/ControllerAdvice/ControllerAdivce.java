@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -42,13 +43,22 @@ public class ControllerAdivce {
 		
 		List<ObjectError> allErrors = e.getBindingResult().getAllErrors();
 		
+		Map<String, String> errors2 = new HashMap<>();
+		
 		ArrayList<String> errors = allErrors.stream()
-		.map( er -> er.getDefaultMessage())
+		.map( er -> ((FieldError) er).getField() + " : " + er.getDefaultMessage()
+		)
 		.collect(Collectors.toCollection(ArrayList::new));
+		
+		allErrors.stream()
+		.forEach( er -> {
+			errors2.put(((FieldError) er).getField(), er.getDefaultMessage());
+			}
+		);
 		
 		return ResponseEntity
 				.status(ErrorCode.VALIDATION_ERROR.getStatus())
-                .body(new MyResponse(false, "입력값 오류", errors));
+                .body(new MyResponse(false, "입력값 오류", errors2));
 		
 	}
 	
